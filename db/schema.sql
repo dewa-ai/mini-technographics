@@ -8,6 +8,7 @@ CREATE TABLE companies (
         CHECK (crawl_status IN ('pending', 'ok', 'dns_failed', 'timeout',
                                 'http_error', 'blocked', 'robots_disallowed', 'error')),
     http_status  INTEGER,
+    crawl_error  TEXT,
     crawled_at   TIMESTAMPTZ,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );

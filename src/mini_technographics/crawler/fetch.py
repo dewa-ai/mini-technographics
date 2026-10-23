@@ -28,7 +28,7 @@ def make_client() -> httpx.AsyncClient:
         headers={"User-Agent": USER_AGENT},
         timeout=TIMEOUT,
         follow_redirects=True,
-        max_redirects=5,
+        max_redirects=10,
     )
 
 

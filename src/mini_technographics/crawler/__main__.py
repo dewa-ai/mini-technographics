@@ -45,9 +45,9 @@ async def write_batch(conn: psycopg.AsyncConnection, batch: list[tuple[int, Fetc
     async with conn.cursor() as cur:
         await cur.executemany(
             """UPDATE companies
-               SET crawl_status = %s, final_url = %s, http_status = %s, crawled_at = now()
+               SET crawl_status = %s, final_url = %s, http_status = %s, crawl_error = %s, crawled_at = now()
                WHERE id = %s""",
-            [(r.crawl_status, r.final_url, r.http_status, cid) for cid, r in batch],
+            [(r.crawl_status, r.final_url, r.http_status, r.error, cid) for cid, r in batch],
         )
         pages = [
             (cid, Jsonb(r.headers), gzip.compress(r.body), len(r.body), r.truncated)
