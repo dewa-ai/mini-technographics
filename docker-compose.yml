@@ -15,5 +15,14 @@ services:
       timeout: 3s
       retries: 10
 
+  crawler:
+    build: .
+    profiles: ["crawl"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   pgdata:
