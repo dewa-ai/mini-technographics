@@ -49,3 +49,13 @@ CREATE TABLE pages (
     truncated   BOOLEAN NOT NULL DEFAULT false,
     fetched_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE rendered_pages (
+    company_id  BIGINT PRIMARY KEY REFERENCES companies(id) ON DELETE CASCADE,
+    status      TEXT NOT NULL,
+    headers     JSONB NOT NULL DEFAULT '{}',
+    html_gz     BYTEA,
+    script_urls JSONB NOT NULL DEFAULT '[]',
+    error       TEXT,
+    rendered_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
