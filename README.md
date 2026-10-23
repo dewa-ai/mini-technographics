@@ -175,16 +175,19 @@ uv run ruff check .
 ```
 
 ## Project layout
+
+```
 db/
-schema.sql tables, created automatically on first start
-analytics.sql sites / site_technologies views
-queries.sql business questions
+  schema.sql          tables, created automatically on first start
+  analytics.sql       sites / site_technologies views
+  queries.sql         business questions
 src/mini_technographics/
-load_domains.py Tranco CSV → companies
-crawler/ fetch.py, robots.py, main.py (runner)
-detector/ signatures.yaml, engine.py, main.py (runner)
-evaluation/ render.py, compare_rendered.py, make_goldset.py, label.py
-eval/ evaluation reports
-tests/ unit tests
-Dockerfile crawler image
-Dockerfile.render renderer image (Chromium)
+  load_domains.py     Tranco CSV -> companies
+  crawler/            fetch.py, robots.py, __main__.py (runner)
+  detector/           signatures.yaml, engine.py, __main__.py (runner)
+  evaluation/         render.py, compare_rendered.py, make_goldset.py, label.py
+eval/                 evaluation reports
+tests/                unit tests
+Dockerfile            crawler image
+Dockerfile.render     renderer image (Chromium)
+```
