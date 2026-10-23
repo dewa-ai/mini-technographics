@@ -38,3 +38,12 @@ CREATE TABLE crawl_runs (
 
 CREATE INDEX idx_company_tech_technology ON company_technologies (technology_id);
 CREATE INDEX idx_companies_crawl_status  ON companies (crawl_status);
+
+CREATE TABLE pages (
+    company_id  BIGINT PRIMARY KEY REFERENCES companies(id) ON DELETE CASCADE,
+    headers     JSONB NOT NULL,
+    html_gz     BYTEA,
+    html_bytes  INTEGER NOT NULL DEFAULT 0,
+    truncated   BOOLEAN NOT NULL DEFAULT false,
+    fetched_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
