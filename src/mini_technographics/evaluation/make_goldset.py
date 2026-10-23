@@ -39,11 +39,17 @@ def main() -> None:
     load_dotenv()
     with psycopg.connect(os.environ["DATABASE_URL"]) as conn:
         rows = conn.execute(
-            """SELECT c.id, c.domain, c.final_url, count(ct.technology_id) AS n
-               FROM companies c
-               LEFT JOIN company_technologies ct ON ct.company_id = c.id
-               WHERE c.crawl_status = 'ok'
-               GROUP BY c.id ORDER BY c.id"""
+            # One domain per final host: 140 Google domains redirect to www.google.com.
+            """SELECT DISTINCT ON (host) id, domain, final_url, n
+               FROM (
+                   SELECT c.id, c.domain, c.final_url, count(ct.technology_id) AS n,
+                          substring(c.final_url from '^https?://([^/:]+)') AS host
+                   FROM companies c
+                   LEFT JOIN company_technologies ct ON ct.company_id = c.id
+                   WHERE c.crawl_status = 'ok'
+                   GROUP BY c.id
+               ) t
+               ORDER BY host, id"""
         ).fetchall()
 
     rng = random.Random(SEED)

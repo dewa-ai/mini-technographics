@@ -9,6 +9,9 @@ USER_AGENT = "mini-technographics/0.1 (+https://github.com/dewa-ai/mini-technogr
 MAX_BYTES = 256 * 1024  # most technology signatures live in headers and <head>
 TIMEOUT = httpx.Timeout(connect=3.0, read=10.0, write=5.0, pool=5.0)
 BLOCKED_STATUSES = {401, 403, 429}
+# Hosts that national or ISP filters redirect blocked sites to
+# (observed while crawling from an Indonesian network).
+BLOCK_PAGE_HOSTS = {"internet-positif.info"}
 
 
 @dataclass
@@ -52,6 +55,12 @@ def _classify_status(status: int) -> str:
     return "ok"
 
 
+def _classify_response(response: httpx.Response) -> str:
+    if response.url.host in BLOCK_PAGE_HOSTS:
+        return "isp_blocked"
+    return _classify_status(response.status_code)
+
+
 async def _read_capped(response: httpx.Response) -> tuple[bytes, bool]:
     """Read the body but stop after MAX_BYTES."""
     chunks: list[bytes] = []
@@ -73,7 +82,7 @@ async def fetch_homepage(client: httpx.AsyncClient, domain: str) -> FetchResult:
                 body, truncated = await _read_capped(response)
                 return FetchResult(
                     domain=domain,
-                    crawl_status=_classify_status(response.status_code),
+                    crawl_status=_classify_response(response),
                     final_url=str(response.url),
                     http_status=response.status_code,
                     headers=dict(response.headers),
