@@ -24,6 +24,7 @@ CREATE TABLE company_technologies (
     technology_id INTEGER NOT NULL REFERENCES technologies(id) ON DELETE CASCADE,
     first_seen    TIMESTAMPTZ NOT NULL DEFAULT now(),
     last_seen     TIMESTAMPTZ NOT NULL DEFAULT now(),
+    evidence      TEXT,
     PRIMARY KEY (company_id, technology_id)
 );
 
