@@ -1,0 +1,23 @@
+[project]
+name = "mini-technographics"
+version = "0.1.0"
+description = "A small-scale technographics pipeline: crawl websites, detect technologies, serve via API."
+readme = "README.md"
+authors = [
+    { name = "Dewa", email = "176932527+dewa-ai@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+mini-technographics = "mini_technographics:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.2",
+]
