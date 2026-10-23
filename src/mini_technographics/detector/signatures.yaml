@@ -62,14 +62,17 @@
   category: CMS
   meta_generator: '^wordpress'
   html: ['/wp-content/', '/wp-includes/']
+  implies: [PHP]
 - name: Drupal
   category: CMS
   headers: {x-drupal-cache: "", x-generator: 'drupal'}
   meta_generator: '^drupal'
   html: ['drupal-settings-json']
+  implies: [PHP]
 - name: Joomla
   category: CMS
   meta_generator: '^joomla'
+  implies: [PHP]
 - name: Ghost
   category: CMS
   meta_generator: '^ghost'
@@ -92,9 +95,11 @@
 - name: WooCommerce
   category: Ecommerce
   html: ['/wp-content/plugins/woocommerce/']
+  implies: [WordPress]
 - name: Magento
   category: Ecommerce
   html: ['mage/cookies', 'Magento_']
+  implies: [PHP]
 - name: BigCommerce
   category: Ecommerce
   html: ['cdn\d*\.bigcommerce\.com']
@@ -104,9 +109,11 @@
   category: JavaScript framework
   headers: {x-powered-by: 'next\.js'}
   html: ['__NEXT_DATA__', '/_next/static/']
+  implies: [React]
 - name: Nuxt.js
   category: JavaScript framework
   html: ['window\.__NUXT__', '/_nuxt/']
+  implies: [Vue.js]
 - name: React
   category: JavaScript framework
   html: ['data-reactroot', 'react-dom(\.production)?(\.min)?\.js']
@@ -119,6 +126,7 @@
 - name: Gatsby
   category: Static site generator
   html: ['id="___gatsby"']
+  implies: [React]
 - name: jQuery
   category: JavaScript library
   html: ['jquery[.-]?[0-9.]*(\.min)?\.js']

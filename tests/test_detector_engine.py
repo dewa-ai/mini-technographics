@@ -43,3 +43,19 @@ def test_detects_from_cookie():
 
 def test_plain_page_has_no_detections():
     assert detect(SIGS, {"content-type": "text/html"}, "<html><body>Hello</body></html>") == {}
+
+
+def test_implied_technology_is_added_with_its_source():
+    found = detect(SIGS, {}, '<script id="__NEXT_DATA__" type="application/json">')
+    assert found["React"] == "implied by Next.js"
+
+
+def test_implies_is_transitive():
+    html = '<link rel="stylesheet" href="/wp-content/plugins/woocommerce/style.css">'
+    found = detect(SIGS, {}, html)
+    assert {"WooCommerce", "WordPress", "PHP"} <= found.keys()
+
+
+def test_direct_evidence_is_not_overwritten_by_implication():
+    html = '<div data-reactroot></div><script id="__NEXT_DATA__"></script>'
+    assert detect(SIGS, {}, html)["React"].startswith("html:")

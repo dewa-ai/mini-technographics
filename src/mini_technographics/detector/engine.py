@@ -25,6 +25,7 @@ class Signature:
     cookies: list[tuple[str, re.Pattern]] = field(default_factory=list)
     html: list[re.Pattern] = field(default_factory=list)
     meta_generator: re.Pattern | None = None
+    implies: list[str] = field(default_factory=list)
 
 
 def _compile(pattern: str) -> re.Pattern:
@@ -43,8 +44,14 @@ def load_signatures(path: Path = DEFAULT_SIGNATURES) -> list[Signature]:
                 cookies=[(c, _compile(rf"(?:^|[;,]\s*){c}=")) for c in item.get("cookies", [])],
                 html=[_compile(p) for p in item.get("html", [])],
                 meta_generator=_compile(item["meta_generator"]) if "meta_generator" in item else None,
+                implies=item.get("implies", []),
             )
         )
+    names = {s.name for s in signatures}
+    for s in signatures:
+        unknown = set(s.implies) - names
+        if unknown:
+            raise ValueError(f"{s.name} implies unknown technologies: {sorted(unknown)}")
     return signatures
 
 
@@ -72,6 +79,18 @@ def _match(sig: Signature, headers: dict[str, str], set_cookie: str,
     return None
 
 
+def _resolve_implies(signatures: list[Signature], found: dict[str, str]) -> None:
+    """Add implied technologies, transitively. Direct evidence is never overwritten."""
+    by_name = {s.name: s for s in signatures}
+    queue = list(found)
+    while queue:
+        name = queue.pop()
+        for implied in by_name[name].implies:
+            if implied not in found:
+                found[implied] = f"implied by {name}"
+                queue.append(implied)
+
+
 def detect(signatures: list[Signature], headers: dict[str, str], html: str) -> dict[str, str]:
     """Return {technology name: evidence} for every signature that matches."""
     headers = {k.lower(): v for k, v in headers.items()}
@@ -82,4 +101,5 @@ def detect(signatures: list[Signature], headers: dict[str, str], html: str) -> d
         evidence = _match(sig, headers, set_cookie, html, generator)
         if evidence:
             found[sig.name] = evidence
+    _resolve_implies(signatures, found)
     return found
