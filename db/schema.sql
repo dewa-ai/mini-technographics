@@ -6,7 +6,7 @@ CREATE TABLE companies (
     final_url    TEXT,
     crawl_status TEXT NOT NULL DEFAULT 'pending'
         CHECK (crawl_status IN ('pending', 'ok', 'dns_failed', 'timeout',
-                                'http_error', 'blocked', 'error')),
+                                'http_error', 'blocked', 'robots_disallowed', 'error')),
     http_status  INTEGER,
     crawled_at   TIMESTAMPTZ,
     created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
