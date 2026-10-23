@@ -1,5 +1,7 @@
 # Mini Technographics
 
+[![CI](https://github.com/dewa-ai/mini-technographics/actions/workflows/ci.yml/badge.svg)](https://github.com/dewa-ai/mini-technographics/actions/workflows/ci.yml)
+
 A small-scale technographics pipeline: it crawls the homepages of the top 10,000 domains, detects the technologies each site uses from HTTP headers and HTML, stores everything in PostgreSQL, and answers business questions with SQL.
 
 The goal was not only to build the pipeline, but to measure how trustworthy its output is. Most of this README is about what the data can and cannot tell you.
