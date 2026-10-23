@@ -1,0 +1,22 @@
+Advertising: Google AdSense; Meta Pixel
+Analytics: Google Analytics; Hotjar; Microsoft Clarity; Mixpanel
+CDN: Akamai; Amazon CloudFront; Cloudflare; Fastly
+CMS: Drupal; Ghost; Joomla; WordPress
+Cookie consent: Cookiebot; OneTrust
+Customer data platform: Segment
+Ecommerce: BigCommerce; Magento; Shopify; WooCommerce
+Font service: Font Awesome; Google Fonts
+Hosting: Netlify; Vercel
+JavaScript framework: Angular; Next.js; Nuxt.js; React; Vue.js
+JavaScript library: jQuery
+Live chat: Drift; Intercom; Zendesk
+Marketing automation: HubSpot
+Payments: PayPal; Stripe
+Programming language: Java; PHP
+Security: Cloudflare Turnstile; Google reCAPTCHA; hCaptcha
+Static site generator: Gatsby
+Tag manager: Adobe Experience Platform Tags; Google Tag Manager
+UI framework: Bootstrap
+Web framework: ASP.NET; Express
+Web server: Apache HTTP Server; LiteSpeed; Microsoft IIS; Nginx; OpenResty
+Website builder: Squarespace; Webflow; Wix
