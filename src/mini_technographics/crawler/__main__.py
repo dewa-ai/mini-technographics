@@ -35,7 +35,7 @@ async def worker(client: httpx.AsyncClient, jobs: asyncio.Queue, results: asynci
         company_id, domain = await jobs.get()
         try:
             result = await crawl_one(client, domain)
-        except Exception as exc:  # one bad domain must never kill a worker
+        except Exception as exc:  # noqa: BLE001 - one bad domain must never kill a worker
             result = FetchResult(domain, "error", error=f"{type(exc).__name__}: {exc}"[:200])
         await results.put((company_id, result))
         jobs.task_done()
